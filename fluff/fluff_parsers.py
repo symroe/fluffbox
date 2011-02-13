@@ -23,6 +23,7 @@ class ParseMail():
             last_parse = "1970-01-01"
 
         self.mails = Mail.objects.filter(timestamp__gt=last_parse)
+        # self.mails = Mail.objects.filter(timestamp__gt=last_parse, subject__icontains='Biscuitnews')
         
         for mail in self.mails:
             self.mail = mail
@@ -80,6 +81,8 @@ class ParseMail():
                 self.parse_twitter()
             if mail_type == "audioboo":
                 self.parse_audioboo()
+            if mail_type == "youtube":
+                self.parse_youtube()
     
     
     def parse_flickr(self):
@@ -88,9 +91,9 @@ class ParseMail():
         api = Flickr.API.API(settings.FLICKR_KEY, settings.FLICKR_SECRET)
         
         
-        
+        if main_link.endswith('/'):
+            main_link = main_link[:-1]
         photo_id = main_link.split('/')[-1]
-        print photo_id
         
         store_data = {}
         
@@ -142,6 +145,29 @@ class ParseMail():
         FM.title = self.mail.body.strip().splitlines()[0]
         FM.media_type = 'audioboo'
         FM.url = main_link
+        FM.save()
+
+    def parse_youtube(self):
+        main_link = self.links[0]
+        for link in self.links:
+            if re.search(r'http://youtube\.com', link):
+                main_link = link
+        
+        video_id = re.search(r'watch\?v=([^&]+)', main_link)
+        if video_id:
+            video_id = video_id.groups(0)[0]
+        
+        embed_html = """
+            <iframe width="480" height="390" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
+        """ % video_id
+        
+        store_data = {'embed_html' : embed_html}
+        
+        FM = FluffMedia(fluff=self.F)
+        FM.title = self.mail.body.strip().splitlines()[0]
+        FM.media_type = 'youtube'
+        FM.url = main_link
+        FM.fluff_json = json.dumps(store_data)
         FM.save()
         
 
