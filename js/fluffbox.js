@@ -150,7 +150,7 @@ function init(data){
 
     jQuery.each(fluff, function(i, lint){
         jQuery.each(lint.assets, function(i, asset){
-            lint.assets[i].content = tim("image", asset);
+            lint.assets[i].content = tim(asset.media_type, asset);
         }); 
     });
 
@@ -159,20 +159,22 @@ function init(data){
             tim("fluff", data)
         )
         .delegate("[draggable]", "dragstart",function(e){
-            _(e);
             var dataTransfer = e.originalEvent.dataTransfer,
                 elem = jQuery(this),
+                cloneElem = elem.clone(),
+                type = elem.attr("data-type"),
                 dropContent = elem.attr("data-drop"),
-                dropElem, dropNode, width, height, reduction;
-                
+                dropElem = cloneElem.children(),
+                dropNode = dropElem[0],
+                width, height, reduction;
+
+            if (!type){
+                return false;
+            }
+               
             if (!dropContent){
-                dropElem = elem.clone()
-                    .removeAttr("draggable");
-                    
-                dropNode = dropElem[0];
-                removeDataAttr(dropElem);
-            
-                if (dropNode.nodeName === "IMG"){
+                switch(type){
+                    case "image":                
                     width = dropNode.width;
                     height = dropNode.height;
                     
@@ -190,15 +192,19 @@ function init(data){
                     dropElem
                         .attr("width", width)
                         .attr("height", height);
-                }
                     
-                dropContent = dropElem.outerHTML();
+                    dropContent = jQuery.trim(cloneElem.html());
+                    break;
+                    
+                    case "twitter":
+                    dropContent = jQuery.trim(cloneElem.html());
+                    break;
+                }
             }
-
+            
             dataTransfer.effectAllowed = "copy";
             dataTransfer.setData("text/html", dropContent);
-        })
-        .find("img").attr("draggable", true);
+        });
             
     editorElem
         .bind({
@@ -219,7 +225,6 @@ function init(data){
             return false;
         })
         .bind("drop", function(e){
-            _(event);
             var dataTransfer = e.originalEvent.dataTransfer;
             
             if (e.stopPropagation) {

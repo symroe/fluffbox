@@ -66,9 +66,28 @@
         {{/fluff}}
     </script>
     
-    <script type=text/tim class=image>
-        <div class=img-wrapper>
+    <script type=text/tim class=img>
+        <div class=img-wrapper draggable data-type=image>
             <img src="{{url}}" title="{{title}}" alt="{{title}}">
+        </div>
+    </script>
+    
+    <script type=text/tim class=twitter>
+        <div class=tweet draggable data-type=twitter>
+<blockquote>{{fluff_json.0.tweet}}</blockquote> -
+<a href="{{url}}">{{fluff_json.0.date}}</a>
+        </div>
+    </script>
+    
+    <script type=text/tim class=youtube>
+        <div class=iframe-wrapper draggable data-type=youtube>
+            {{fluff_json.0.embed_html}}
+        </div>
+    </script>
+    
+    <script type=text/tim class=audioboox>
+        <div class=iframe-wrapper draggable data-type=audioboo>
+            {{fluff_json.0.embed_html}}
         </div>
     </script>
     
