@@ -150,7 +150,14 @@ function init(data){
 
     jQuery.each(fluff, function(i, lint){
         jQuery.each(lint.assets, function(i, asset){
-            lint.assets[i].content = tim(asset.media_type, asset);
+            var content;
+            try {
+                content = tim(asset.media_type, asset);
+            }
+            catch(e){
+                content = "";
+            }
+            lint.assets[i].content = content;
         }); 
     });
 
