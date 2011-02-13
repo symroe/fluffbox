@@ -144,7 +144,7 @@ function updateAll(){
 updateAll = throttle(updateAll, updateThrottle, true);
 
 function init(data){
-    var data = getData(),
+    // var data = getData(),
         fluff = data.fluff.sort(sortByTimestamp);
         
     editorVal = getCachedContent();
