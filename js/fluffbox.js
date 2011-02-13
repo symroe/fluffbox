@@ -3,7 +3,8 @@
 var namespace = "fluffbox",
     maxImageWidth = 500,
     maxImageHeight = 500,
-    previewUpdateThrottle = 250,
+    updateThrottle = 50,
+    cacheSaveThrottle = 250,
     markdown = new Showdown.converter(),
     cache = new Cache(namespace),
 
@@ -11,7 +12,9 @@ var namespace = "fluffbox",
     //document = window.document,
     fluffElem = jQuery("#fluff"),
     editorElem = jQuery("#editor"),
-    previewElem = jQuery("#preview");
+    previewElem = jQuery("#preview"),
+    
+    editorVal;
 
 
 /////
@@ -70,6 +73,11 @@ function moveCaretToEnd(input){
     setCaretToPos(editorElem[0], input.value.length);
 }
 
+function autoHeight(elem){
+    elem.css("height", "auto");
+    elem.height(elem.attr("scrollHeight"));
+}
+
 function removeDataAttr(elem){
     jQuery.each(elem[0].attributes, function(i, attr){
         if (attr.specified && attr.nodeName.indexOf("data-") === 0){
@@ -87,14 +95,37 @@ function getData(){
 
 function updatePreview(){
     previewElem.html(
-        toHtml(editorElem.val())
+        toHtml(editorVal)
     );
 }
 //updatePreview = throttle(updatePreview, previewUpdateThrottle, true);
 
+function saveToCache(){
+    cache.set("content", editorVal);
+}
+saveToCache = throttle(saveToCache, cacheSaveThrottle, true);
+
+function getCachedContent(){
+    return cache.get("content");
+}
+
+function updateAll(){
+    var oldVal = editorVal;
+    
+    editorVal = editorElem.val();
+    if (oldVal !== editorVal){
+        autoHeight(editorElem);
+        updatePreview();
+        saveToCache();
+    }
+}
+updateAll = throttle(updateAll, updateThrottle, true);
+
 function init(){
     var data = getData(),
         fluff = data.fluff.sort(sortByTimestamp);
+        
+    editorVal = getCachedContent();
 
     jQuery.each(fluff, function(i, lint){
         jQuery.each(lint.assets, function(i, asset){
@@ -149,8 +180,11 @@ function init(){
         .find("img").attr("draggable", true);
             
     editorElem
-        .keyup(function(){
-            updatePreview();
+        .bind({
+            cut: updateAll,
+            paste: updateAll,
+            keyup: updateAll,
+            change: updateAll
         })
         
         // DnD modified from http://html5rocks.com/tutorials/dnd/basics/
@@ -172,9 +206,9 @@ function init(){
             }
 
             insertAtCursor(editorElem[0], dataTransfer.getData('text/html'));
-            editorElem.focus();
             
-            updatePreview();
+            updateAll();
+            editorElem.focus();
 
             return false;
         });
@@ -188,6 +222,11 @@ function init(){
             * inputs for max width, height, img as markdown/html
             * store in localStorage
         */
+    if (editorVal){
+        editorElem.val(editorVal);
+        autoHeight(editorElem);
+        updatePreview();
+    }
 }
 
 init();
