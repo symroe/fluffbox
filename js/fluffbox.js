@@ -1,6 +1,7 @@
 /*global: data, jQuery, _, Showdown, throttle, Cache, tim */
 
-var namespace = "fluffbox",
+var debug = true,
+    namespace = "fluffbox",
     maxImageWidth = 500,
     maxImageHeight = 500,
     updateThrottle = 50,
@@ -110,9 +111,8 @@ function removeDataAttr(elem){
 
 
 function getData(callback){
-    // TODO: temp
-    jQuery.getJSON('/fluffs/', callback);
-    // return data;
+    var url = debug ? "tmp_data.json" : "/fluffs/";
+    jQuery.getJSON(url, callback);
 }
 
 function updatePreview(){
@@ -144,8 +144,7 @@ function updateAll(){
 updateAll = throttle(updateAll, updateThrottle, true);
 
 function init(data){
-    var data = getData(),
-        fluff = data.fluff.sort(sortByTimestamp);
+    var fluff = data.fluff.sort(sortByTimestamp);
         
     editorVal = getCachedContent();
 
