@@ -1,0 +1,62 @@
+html, body {
+    height:100%;
+}
+
+body {
+    margin:0.62em 1em;
+}
+
+body > header h1 {
+    position: absolute;
+    top:0;
+    left:0;
+    font-size:0.8em;
+    padding:0;
+    margin:0;
+}
+section h1 {
+    font-size:1.2em;
+    padding:0;
+    margin:1em 0 0;
+}
+
+
+/* Wrappers */
+#fluff-wrapper {
+    float:left;
+    width:15%;
+    margin-right:5%;
+}
+#editor-wrapper {
+    float:right;
+    width:80%;
+    height:61.8%;
+}
+#preview-wrapper {
+    float:left;
+    height:38.2%;
+}
+#source-wrapper {
+    display:none;
+}
+
+
+/* Editor */
+#editor-wrapper h1 {
+    display:none;
+}
+#editor {
+    height:100%;
+    width:100%;
+    display:block;
+}
+
+/* Fluff */
+#fluff img {
+    width:100%;
+}
+#fluff ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}

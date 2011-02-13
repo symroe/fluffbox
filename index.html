@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>fluffbox</title>
+    <link rel=stylesheet href=css/fluffbox.css>
+  </head>
+  
+  <body>
+    <header>
+        <h1>fluffbox</h1>
+    </header>
+    
+    <section id=fluff-wrapper>
+        <h1>Fluff</h1>
+        <div id=fluff></div>
+    </section>
+    
+    <section id=editor-wrapper>
+        <h1>Editor</h1>
+        <textarea id=editor placeholder="EDIT HERE
+(both HTML and Markdown is fine)"></textarea>
+    </section>
+    
+    <section id=preview-wrapper>
+        <h1>Preview</h1>
+        <div id=preview></div>
+    </section>
+    
+    <section id=source-wrapper>
+        <h1>HTML Source</h1>
+        <div id=source></div>
+    </section>
+    
+    
+    <!-- TEMPLATES -->
+    <script type=text/tim class=fluff>
+        {{fluff}}
+        <article>
+            <h1>{{title}}</h1>
+            <p>{{timestamp}}</p>
+            <ul class=assets>
+                {{assets}}
+                <li>
+                    {{content}}
+                </li>
+                {{/assets}}
+            </ul>
+        </article>
+        {{/fluff}}
+    </script>
+    
+    <script type=text/tim class=image>
+        <img src="{{url}}" title="{{title}}" alt="{{title}}">
+    </script>
+    
+    <!-- DEV SCRIPTS -->
+    <script src=js/console.js></script>
+    <script src=js/data.js></script>
+    
+    <!-- DEPENDENCIES -->
+    <script src=js/jquery.min.js></script>
+    <script src=js/outerhtml.js></script>
+    <script src=js/cache.js></script>
+    <script src=js/throttle.js></script>
+    <script src=js/tim.js></script>
+    <script src=js/showdown.js></script>
+     
+    <!-- fluffbox -->
+    <script src=js/fluffbox.js></script>    
+  </body>
+</html>
