@@ -80,9 +80,10 @@ function removeDataAttr(elem){
 }
 
 
-function getData(){
+function getData(callback){
     // TODO: temp
-    return data;
+    jQuery.getJSON('/fluffs/', callback);
+    // return data;
 }
 
 function updatePreview(){
@@ -92,9 +93,8 @@ function updatePreview(){
 }
 //updatePreview = throttle(updatePreview, previewUpdateThrottle, true);
 
-function init(){
-    var data = getData(),
-        fluff = data.fluff.sort(sortByTimestamp);
+function init(data){
+    var fluff = data.fluff.sort(sortByTimestamp);
 
     jQuery.each(fluff, function(i, lint){
         jQuery.each(lint.assets, function(i, asset){
@@ -190,4 +190,4 @@ function init(){
         */
 }
 
-init();
+getData(init);

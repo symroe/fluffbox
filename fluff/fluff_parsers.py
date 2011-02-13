@@ -1,9 +1,12 @@
 import re
+import json
 
 import BeautifulSoup
+import Flickr.API
 
 from email_parser.models import Mail, Attachment
 from fluff.models import Fluff, FluffMedia
+from django.conf import settings
 
 
 class ParseMail():
@@ -81,11 +84,35 @@ class ParseMail():
     
     def parse_flickr(self):
         main_link = self.links[0]
-    
+        
+        api = Flickr.API.API(settings.FLICKR_KEY, settings.FLICKR_SECRET)
+        
+        
+        
+        photo_id = main_link.split('/')[-1]
+        print photo_id
+        
+        store_data = {}
+        
+        rsp = api.execute_method(method='flickr.photos.getInfo', args={'photo_id' : photo_id, 'format' : 'json'})
+        data = json.loads(rsp.read()[14:-1])
+        if 'photo' in data:
+            store_data['farm'] = data['photo']['farm']
+            store_data['server'] = data['photo']['server']
+            store_data['title'] = data['photo']['title']
+            store_data['id'] = data['photo']['id']
+
+        rsp = api.execute_method(method='flickr.photos.getSizes', args={'photo_id' : photo_id, 'format' : 'json'})
+        data = json.loads(rsp.read()[14:-1])
+        if 'sizes' in data:
+            main_link = data['sizes']['size'][3]['source']
+
+        
         FM = FluffMedia(fluff=self.F)
         FM.title = self.mail.body.splitlines()[0]
         FM.media_type = 'img'
         FM.url = main_link
+        FM.fluff_json = json.dumps(store_data)
         FM.save()
     
     def parse_twitter(self):
@@ -93,11 +120,16 @@ class ParseMail():
         for link in self.links:
             if re.search(r'/status/', link):
                 main_link = link
-
+        
+        store_data = {}
+        store_data['tweet'] = self.mail.body.strip().splitlines()[2]
+        store_data['date'] = self.mail.body.strip().splitlines()[1]
+        
         FM = FluffMedia(fluff=self.F)
         FM.title = self.mail.body.strip().splitlines()[0]
         FM.media_type = 'twitter'
         FM.url = main_link
+        FM.fluff_json = json.dumps(store_data)
         FM.save()
 
     def parse_audioboo(self):
