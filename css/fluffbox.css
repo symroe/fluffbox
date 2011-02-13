@@ -36,6 +36,11 @@ section h1 {
     height:95%;
     overflow:auto;
 }
+#fluff article {
+    border-bottom:1px solid #ccc;
+    padding:0.5em 0;
+    margin:0.5em 0;
+}
 #fluff-wrapper > h1 {
     display:none;
 }
@@ -62,6 +67,15 @@ section h1 {
 }
 #fluff-wrapper input {
     width:100%;
+}
+#fluff-wrapper h2 {
+    margin:0.62em 0 0;
+}
+
+#tweets li {
+    margin:0.5em 0;
+    padding:0.5em 0;
+    border-bottom:1px solid #ccc;
 }
 
 /* Prevent the text contents of draggable elements from being selectable. */

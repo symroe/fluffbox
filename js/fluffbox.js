@@ -166,6 +166,7 @@ function init(data){
         .html(
             tim("fluff", data)
         )
+        .add(tweetsElem)
         .delegate("[draggable]", "dragstart",function(e){
             var dataTransfer = e.originalEvent.dataTransfer,
                 elem = jQuery(this),
