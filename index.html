@@ -18,6 +18,14 @@
             <input id=twitter-username placeholder="Twitter username">
             <ul id=tweets></ul>
         </div>
+        <div id=delicious>
+            <input id=delicious-username placeholder="Delicious username">
+            <ul id=deliciouspbookmarks></ul>
+        </div>
+        <div id=flickr>
+            <input id=flickr-username placeholder="Flickr username">
+            <ul id=flickr-photos></ul>
+        </div>
     </section>
     
     <section id=editor-wrapper>
@@ -59,7 +67,9 @@
     </script>
     
     <script type=text/tim class=image>
-        <img src="{{url}}" title="{{title}}" alt="{{title}}">
+        <div class=img-wrapper>
+            <img src="{{url}}" title="{{title}}" alt="{{title}}">
+        </div>
     </script>
     
     <script type=text/tim class=tweets>

@@ -39,8 +39,14 @@ section h1 {
 #fluff-wrapper > h1 {
     display:none;
 }
+#fluff-wrapper div.img-wrapper {
+    width:75px;
+    height:75px;
+    overflow:hidden;
+    margin:0 0.5em 0.5em 0;
+}
 #fluff-wrapper img {
-    width:100%;
+    width:75px;
 }
 #fluff-wrapper ul {
     list-style-type:none;
