@@ -34,10 +34,12 @@ class ParseMail():
         """
         Main parsing function for passing types on to subparsers
         """
-
+        mail_type = None
+        body = self.mail.body.split('--')[0]
+        body_html = self.mail.body_html.split('--')[0]
         # print self.mail.body
-        mail_links = re.findall(r'(http://[^\s]+)', self.mail.body)
-        mail_links.extend(re.findall(r'(http[s]?://[^"|<|>]+)', self.mail.body_html))
+        mail_links = re.findall(r'(http://[^\s]+)', body)
+        mail_links.extend(re.findall(r'(http[s]?://[^"|<|>]+)', body_html))
 
         searches = (
             'flickr',
@@ -46,16 +48,23 @@ class ParseMail():
             'audioboo',
         )
 
+        self.links = [m for m in mail_links]
+
         matches = []
         for m in mail_links:
             mo = re.search("|".join(searches), m)
             if mo:
                 matches.append(mo.group(0))
         if matches and matches[0]:
-            self.links = [m for m in mail_links]
-            return matches[0]
 
-    
+            mail_type = matches[0]
+        
+        if not mail_type:
+            if re.search('http[s]?', body):
+                mail_type = 'link'
+        
+        return mail_type
+        
     def parse(self):
         mail_type = self.sniff_type()
         
@@ -83,6 +92,8 @@ class ParseMail():
                 self.parse_audioboo()
             if mail_type == "youtube":
                 self.parse_youtube()
+            if mail_type == "link":
+                self.parse_link()
     
     
     def parse_flickr(self):
@@ -140,11 +151,26 @@ class ParseMail():
             if re.search(r'http://audioboo\.fm/boos/', link):
                 main_link = link
         
-
+        embed_html = """
+        <object data="http://boos.audioboo.fm/swf/fullsize_player.swf" height="129" id="boo_player_1" type="application/x-shockwave-flash" width="400">
+            <param name="movie" value="http://boos.audioboo.fm/swf/fullsize_player.swf" />
+            <param name="scale" value="noscale" />
+            <param name="salign" value="lt" />
+            <param name="bgColor" value="#FFFFFF" />
+            <param name="allowScriptAccess" value="always" />
+            <param name="wmode" value="window" />
+            <param name="FlashVars" value="mp3=%s.mp3" />
+            <a href="http://audioboo.fm/boos/246206-i-require-biscuits.mp3?source=embed">Listen!</a
+        </object>
+        """ % main_link
+        
+        store_data = {'embed_html' : embed_html}
+        
         FM = FluffMedia(fluff=self.F)
         FM.title = self.mail.body.strip().splitlines()[0]
         FM.media_type = 'audioboo'
         FM.url = main_link
+        FM.fluff_json = json.dumps(store_data)
         FM.save()
 
     def parse_youtube(self):
@@ -171,13 +197,21 @@ class ParseMail():
         FM.save()
         
 
+    def parse_link(self):
+        main_link = self.links[0]
+        
+        FM = FluffMedia(fluff=self.F)
+        FM.title = self.mail.body.strip().splitlines()[0]
+        FM.media_type = 'link'
+        FM.url = main_link
+        FM.save()
+        
 
 
 
 
 
-
-
+        
 
 
 
