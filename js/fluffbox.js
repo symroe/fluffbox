@@ -206,6 +206,9 @@ function init(data){
                     case "twitter":
                     dropContent = jQuery.trim(cloneElem.html());
                     break;
+                    
+                    default:
+                    dropContent = jQuery.trim(cloneElem.html());
                 }
             }
             
