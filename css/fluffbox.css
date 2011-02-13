@@ -3,7 +3,7 @@ html, body {
 }
 
 body {
-    margin:0.62em 1em 1em 0.38em;
+    margin:0.62em 1em 0 0.38em;
     overflow:auto;
 }
 
@@ -29,28 +29,34 @@ section h1 {
 
 #fluff-wrapper {
     float:left;
-    width:12%;
+    width:25%;
     margin-right:2%;
     padding:0 1%;
     border:1px solid #eee;
-    min-height:90%;
+    height:90%;
+    overflow:auto;
 }
 #fluff-wrapper > h1 {
     display:none;
 }
-#fluff img {
+#fluff-wrapper img {
     width:100%;
 }
-#fluff ul {
+#fluff-wrapper ul {
     list-style-type:none;
+}
+#fluff-wrapper blockquote, #fluff-wrapper ul, #fluff-wrapper li {
     margin:0;
     padding:0;
+}
+#fluff-wrapper input {
+    width:100%;
 }
 
 
 #editor-wrapper {
     float:right;
-    width:84%;
+    width:71%;
 }
 #editor-wrapper h1 {
     display:none;
@@ -59,7 +65,7 @@ section h1 {
     width:100%;
     display:block;
     overflow:hidden;
-    min-height:5em;
+    min-height:3em;
 }
 
 #preview-wrapper {
@@ -73,7 +79,7 @@ section h1 {
 body > footer {
     clear:both;
     font-size:0.8em;
-    margin-top:1em;
+    padding-top:0.62em;
     color:#ccc;
     font-style:italic;
 }

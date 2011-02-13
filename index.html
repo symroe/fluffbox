@@ -14,6 +14,10 @@
     <section id=fluff-wrapper>
         <h1>Fluff</h1>
         <div id=fluff></div>
+        <div id=twitter>
+            <input id=twitter-username placeholder="Twitter username">
+            <ul id=tweets></ul>
+        </div>
     </section>
     
     <section id=editor-wrapper>
@@ -56,6 +60,17 @@
     
     <script type=text/tim class=image>
         <img src="{{url}}" title="{{title}}" alt="{{title}}">
+    </script>
+    
+    <script type=text/tim class=tweets>
+        {{tweets}}
+        <li>
+            <blockquote>{{text}}</blockquote> -
+            <a href="http://twitter.com/{{user.screen_name}}/{{id_str}}">
+                {{created_at}}
+            </a>
+        </li>
+        {{/tweets}}
     </script>
     
     <!-- DEV SCRIPTS -->

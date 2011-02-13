@@ -5,6 +5,7 @@ var namespace = "fluffbox",
     maxImageHeight = 500,
     updateThrottle = 50,
     cacheSaveThrottle = 250,
+    tweetTimeout = 60,
     markdown = new Showdown.converter(),
     cache = new Cache(namespace),
 
@@ -13,11 +14,31 @@ var namespace = "fluffbox",
     fluffElem = jQuery("#fluff"),
     editorElem = jQuery("#editor"),
     previewElem = jQuery("#preview"),
+    twitterUserElem = jQuery("#twitter-username"),
+    tweetsElem = jQuery("#tweets"),
     
     editorVal;
 
 
 /////
+
+function now(){
+    return (new Date()).getTime();
+}
+
+function faveTweets(username, callback){
+    var cacheNS = "favetweets-" + username,
+        tweets = cache.wrapper(cacheNS);
+        
+    if (tweets && tweets.t + (tweetTimeout * 1000) < now()){
+        return callback(tweets.v);
+    }
+    
+    jQuery.getJSON("http://api.twitter.com/1/favorites/" + username + ".json?callback=?", function(data){
+        cache.set(cacheNS, data);
+        callback(data);
+    });
+}
 
 
 function toHtml(content){
@@ -212,7 +233,22 @@ function init(){
 
             return false;
         });
- 
+    
+    function updateTweets(content){
+        tweetsElem.html(content);
+    }
+        
+    twitterUserElem.change(function(){
+        var username = twitterUserElem.val();
+        if (username){
+            faveTweets(username, function(tweets){
+                updateTweets(tim("tweets", {tweets:tweets}));
+            });
+        }
+        else {
+            updateTweets("");
+        }
+    });
         
         // TODO: restore from localStorage, and if populated, then run this
         // moveCaretToEnd(editorElem[0]); editorElem.blur()
@@ -224,6 +260,7 @@ function init(){
         */
     if (editorVal){
         editorElem.val(editorVal);
+        moveCaretToEnd(editorElem[0]);
         autoHeight(editorElem);
         updatePreview();
     }
