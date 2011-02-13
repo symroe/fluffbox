@@ -14,16 +14,22 @@
     <section id=fluff-wrapper>
         <h1>Fluff</h1>
         <div id=fluff></div>
+        
+        <h2>Twitter faves</h2>
         <div id=twitter>
-            <input id=twitter-username placeholder="Twitter username">
+            <input id=twitter-username placeholder="Twitter user">
             <ul id=tweets></ul>
         </div>
+        
+        <h2>Delicious bookmarks</h2>
         <div id=delicious>
-            <input id=delicious-username placeholder="Delicious username">
+            <input id=delicious-username placeholder="Delicious user">
             <ul id=deliciouspbookmarks></ul>
         </div>
+        
+        <h2>Flickr faves</h2>
         <div id=flickr>
-            <input id=flickr-username placeholder="Flickr username">
+            <input id=flickr-username placeholder="Flickr user">
             <ul id=flickr-photos></ul>
         </div>
     </section>
@@ -72,13 +78,6 @@
         </div>
     </script>
     
-    <script type=text/tim class=twitter>
-        <div class=tweet draggable data-type=twitter>
-<blockquote>{{fluff_json.0.tweet}}</blockquote> -
-<a href="{{url}}">{{fluff_json.0.date}}</a>
-        </div>
-    </script>
-    
     <script type=text/tim class=youtube>
         <div class=iframe-wrapper draggable data-type=youtube>
             <a href="{{url}}">{{title}}</a>
@@ -93,13 +92,18 @@
         </div>
     </script>
     
+    <script type=text/tim class=twitter>
+        <div class=tweet draggable data-type=twitter>
+<blockquote>{{fluff_json.0.tweet}}</blockquote> -
+<a href="{{url}}">{{fluff_json.0.date}}</a>
+        </div>
+    </script>
+    
     <script type=text/tim class=tweets>
         {{tweets}}
-        <li>
-            <blockquote>{{text}}</blockquote> -
-            <a href="http://twitter.com/{{user.screen_name}}/{{id_str}}">
-                {{created_at}}
-            </a>
+        <li draggable data-type=twitter>
+<blockquote>{{text}}</blockquote> -
+<a href="http://twitter.com/{{user.screen_name}}/{{id_str}}">{{created_at}}</a>
         </li>
         {{/tweets}}
     </script>
