@@ -47,11 +47,11 @@ section > h2 {
     width:25%;
     margin-right:2%;
     padding:0 0 0.42em;
-    border:1px solid #FCE3E3;
-    background-color:#FEF6F6;
+    border:1px solid #F8E8E8;
+    background-color:#FBF9F9;
 }
 #fluff article {
-    border-bottom:1px solid #FCE3E3;
+    border-bottom:1px solid #F8E8E8;
     padding:0.5em 0;
     margin:0.5em 0;
 }
