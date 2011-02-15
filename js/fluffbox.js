@@ -23,6 +23,44 @@ var debug = true,
 
 /////
 
+/*
+ * JavaScript Pretty Date
+ * Copyright (c) 2008 John Resig (jquery.com)
+ * Licensed under the MIT license.
+ */
+
+// Takes an ISO time and returns a string representing how
+// long ago the date represents.
+function prettyDate(time){
+	var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ")),
+		diff = (((new Date()).getTime() - date.getTime()) / 1000),
+		day_diff = Math.floor(diff / 86400);
+			
+	if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
+		return;
+			
+	return day_diff == 0 && (
+			diff < 60 && "just now" ||
+			diff < 120 && "1 minute ago" ||
+			diff < 3600 && Math.floor( diff / 60 ) + " minutes ago" ||
+			diff < 7200 && "1 hour ago" ||
+			diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
+		day_diff == 1 && "Yesterday" ||
+		day_diff < 7 && day_diff + " days ago" ||
+		day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
+}
+
+// If jQuery is included in the page, adds a jQuery plugin to handle it as well
+if ( typeof jQuery != "undefined" )
+	jQuery.fn.prettyDate = function(){
+		return this.each(function(){
+			var date = prettyDate(this.title);
+			if ( date )
+				jQuery(this).text( date );
+		});
+	};
+
+
 function now(){
     return (new Date()).getTime();
 }
@@ -144,6 +182,10 @@ function updateAll(){
 updateAll = throttle(updateAll, updateThrottle, true);
 
 function init(data){
+    // Limit size of fluff sidebar    
+    jQuery("#fluff, #twitter, #flickr, #delicious")
+        .css("max-height", window.innerHeight + "px");
+
     var fluff = data.fluff.sort(sortByTimestamp);
         
     editorVal = getCachedContent();
@@ -151,6 +193,11 @@ function init(data){
     jQuery.each(fluff, function(i, lint){
         jQuery.each(lint.assets, function(i, asset){
             var content;
+            
+            if (asset.media_type === "twitter"){
+               //asset.fluff_json[0].date = prettyDate(asset.fluff_json[0].date);
+            }
+            
             try {
                 content = tim(asset.media_type, asset);
             }
@@ -280,6 +327,30 @@ function init(data){
         autoHeight(editorElem);
         updatePreview();
     }
+    
+    /////
+    
+    
+    // SHOW/HIDE INSTRUCTION
+    var instructionsElem = jQuery("#instructions"),
+        instructionsHeadingElem = jQuery("h1", instructionsElem),
+        instructionsContentsElem = jQuery("> *:not(h1)", instructionsElem);
+    
+    instructionsElem.data("hidden", true);
+    instructionsHeadingElem
+        .click(function(){
+            var hidden = instructionsElem.data("hidden");
+            instructionsElem.data("hidden", !hidden);
+            
+            if (hidden){
+                instructionsHeadingElem.text("Hide instructions");
+                instructionsContentsElem.slideDown("fast");
+            }
+            else {
+                instructionsHeadingElem.text("Show instructions");
+                instructionsContentsElem.slideUp("fast");
+            }
+        });
 }
 
 getData(init);

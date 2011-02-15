@@ -11,6 +11,22 @@
         <h1>fluffbox</h1>
     </header>
     
+    <p class=credit>~ built in 24 hrs by <a href=http://twitter.com/symroe title="Sym Roe">Sym</a> & <a href=http://twitter.com/premasagar title="Premasagar Rose">Prem</a> at the <a href=http://rewiredstate.org/events/rewired-state-and-the-guardian-sxsw><abbr title="South by South West">SXSW</abbr> Hack Day</a>.</p>
+    
+    <section id=instructions>
+    <h1>Show instructions</h1>
+    <p>Fluffbox is a tool to help journalists gather links and media assets in the thick of a developing story, later pulling those assets into a new article.</p>
+    <ul>
+        <li>Email links & media to <em>fluff@fluffbox.net</em> - emails with the same subject are grouped together - or fave tweets, Flickr photos and Delicious bookmarks.</li>
+        <li>In the editor area, write plain text, HTML or <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> and drag in your assets.</li>
+        <li>Copy and paste the finished HTML into your CMS.</li>
+    </ul>
+    
+    <p>NOTE: so far only tested in the <a href=http://www.google.com/chrome>Chrome</a> browser.</p>
+    </section>
+    
+	<a href=https://github.com/symroe/fluffbox title="Fluffbox, on GitHub" style="position:absolute; top:0; right:0; border:0; background:url(http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png) 0 -16px no-repeat; text-indent:-9999em; display:block; width:133px; height:133px;">Fork me on GitHub</a>
+    
     <section id=fluff-wrapper>
         <h1>Fluff</h1>
         <div id=fluff></div>
@@ -23,21 +39,20 @@
         
         <h2>Delicious bookmarks</h2>
         <div id=delicious>
-            <input id=delicious-username placeholder="Delicious user">
+            <input id=delicious-username placeholder="Delicious user [currently deactivated]">
             <ul id=deliciouspbookmarks></ul>
         </div>
         
         <h2>Flickr faves</h2>
         <div id=flickr>
-            <input id=flickr-username placeholder="Flickr user">
+            <input id=flickr-username placeholder="Flickr user [currently deactivated]">
             <ul id=flickr-photos></ul>
         </div>
     </section>
     
     <section id=editor-wrapper>
         <h1>Editor</h1>
-        <textarea id=editor placeholder="EDIT HERE
-(both HTML and Markdown is fine)"></textarea>
+        <textarea id=editor placeholder="THE EDITOR (both HTML and Markdown is fine)"></textarea>
     </section>
     
     <section id=preview-wrapper>
@@ -51,7 +66,7 @@
     </section>
     
     <footer>
-        Thank you for using Fluffbox
+        Thank you for using Fluffbox.
     </footer>
     
     
@@ -79,14 +94,16 @@
     </script>
     
     <script type=text/tim class=youtube>
-        <div class=iframe-wrapper draggable data-type=youtube>
+        <div class=iframe-wrapper draggable data-type=youtube
+            data-drop='{{fluff_json.0.embed_html}}'>
             <a href="{{url}}">{{title}}</a>
             {{fluff_json.0.embed_html}}
         </div>
     </script>
     
     <script type=text/tim class=audioboo>
-        <div class=iframe-wrapper draggable data-type=audioboo>
+        <div class=iframe-wrapper draggable data-type=audioboo
+            data-drop='{{fluff_json.0.embed_html}}'>
             <a href="{{url}}">{{title}}</a>
             {{fluff_json.0.embed_html}}
         </div>
