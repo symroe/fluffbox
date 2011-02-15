@@ -149,8 +149,7 @@ function removeDataAttr(elem){
 
 
 function getData(callback){
-    // var url = debug ? "tmp_data.json" : "/fluffs/";
-    var url = "/fluffs/";
+    var url = debug ? "tmp_data.json" : "/fluffs/";
     jQuery.getJSON(url, callback);
 }
 
