@@ -1,0 +1,17 @@
+# Big disclaimer #
+
+This code was written at a hack weekend meaning it:
+
+* Isn't tested.
+* It's beautiful (and is far from it in most places).
+* It's designed well.
+* Isn't working.
+
+If you are going to download it and or use it please:
+
+* Contact @symroe on twitter, as I'd like to know about it :)
+* Don't blame me ;)
+
+I hope to get an alpha up and running soon.  I have a lot of ideas about where this project should go and what needs adding or changing.
+
+I might be looking for Android and iPhone devs at some point.

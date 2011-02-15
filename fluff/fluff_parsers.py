@@ -68,7 +68,7 @@ class ParseMail():
     def parse(self):
         mail_type = self.sniff_type()
         
-        print mail_type
+        # print mail_type
         
         try:
             F = Fluff.objects.get(fluff_id=self.mail.pk)
@@ -82,7 +82,6 @@ class ParseMail():
         F.save()
         self.F = F
         
-        new = True
         if new:
             if mail_type == "flickr":
                 self.parse_flickr()

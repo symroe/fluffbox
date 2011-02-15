@@ -1,6 +1,6 @@
 /*global: data, jQuery, _, Showdown, throttle, Cache, tim */
 
-var debug = true,
+var debug = false,
     namespace = "fluffbox",
     maxImageWidth = 500,
     maxImageHeight = 500,
@@ -149,7 +149,8 @@ function removeDataAttr(elem){
 
 
 function getData(callback){
-    var url = debug ? "tmp_data.json" : "/fluffs/";
+    // var url = debug ? "tmp_data.json" : "/fluffs/";
+    var url = "/fluffs/";
     jQuery.getJSON(url, callback);
 }
 
